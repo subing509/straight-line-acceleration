@@ -1,0 +1,27 @@
+__pycache__/
+*.py[cod]
+build/
+devel/
+install/
+log/
+logs/
+*.bag
+*.bag.active
+*.csv
+exports/
+backups/
+tmp/
+output/
+.env
+.env.*
+*.pem
+*.key
+.ssh/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+# Source dependencies imported via dependencies.repos
+src/catkin_simple/
+src/glog_catkin/
+src/gflags_catkin/
