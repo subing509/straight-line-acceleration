@@ -1,0 +1,6 @@
+# Exploratory SHADOW parameters, NOT validated for live 40 km/h use.
+# Other PD/filter/rate values stay at baseline for controlled comparisons.
+controller:
+  lookahead_min: 4.0
+  lookahead_max: 10.0
+  lookahead_speed_gain: 0.50

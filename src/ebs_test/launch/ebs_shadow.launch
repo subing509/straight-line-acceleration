@@ -1,0 +1,52 @@
+<launch>
+  <arg name="enable_vehicle_output" default="false" />
+  <arg name="output_mode" default="shadow_only" />
+  <arg name="can_dest_ip" default="192.168.0.7" />
+  <arg name="can_dest_port" default="20005" />
+  <arg name="can_self_port" default="11312" />
+  <arg name="with_mapping" default="true" />
+  <arg name="profile" default="baseline_shadow" />
+  <arg name="log_dir" default="$(env HOME)/.ros/ebs_test_logs" />
+  <group ns="ebs_test">
+    <rosparam command="load" file="$(find ebs_test)/config/baseline_shadow.yaml" />
+    <rosparam command="load" file="$(find ebs_test)/config/highspeed_candidate.yaml" if="$(eval arg('profile') == 'highspeed_candidate')" />
+    <node pkg="acceleration_event" type="jiantu.py" name="mapper" output="screen" required="true" if="$(arg with_mapping)">
+      <param name="enable_visualization" value="false" />
+      <remap from="/vehicle_pose" to="/ebs_test/vehicle_pose" />
+      <remap from="/cone_map" to="/ebs_test/cone_map" />
+      <remap from="/planned_path" to="/ebs_test/planned_path" />
+      <remap from="/planning/legacy_road_status" to="/ebs_test/road_status" />
+      <remap from="/control/legacy_status" to="/ebs_test/tracker_status" />
+      <remap from="/control/legacy_candidate_steering" to="/ebs_test/candidate_steering" />
+      <remap from="/localization/gps_status" to="/ebs_test/gps_status" />
+      <remap from="/localization/imu_status" to="/ebs_test/imu_status" />
+    </node>
+    <node pkg="acceleration_event" type="zhixian_realtime.py" name="planner" output="screen" required="true">
+      <remap from="/vehicle_pose" to="/ebs_test/vehicle_pose" />
+      <remap from="/cone_map" to="/ebs_test/cone_map" />
+      <remap from="/planned_path" to="/ebs_test/planned_path" />
+      <remap from="/planning/legacy_road_status" to="/ebs_test/road_status" />
+      <remap from="/control/legacy_status" to="/ebs_test/tracker_status" />
+      <remap from="/control/legacy_candidate_steering" to="/ebs_test/candidate_steering" />
+      <remap from="/localization/gps_status" to="/ebs_test/gps_status" />
+      <remap from="/localization/imu_status" to="/ebs_test/imu_status" />
+    </node>
+    <node pkg="ebs_test" type="ebs_controller.py" name="controller" output="screen" required="true">
+      <param name="enable_vehicle_output" value="$(arg enable_vehicle_output)" />
+      <param name="output_mode" value="$(arg output_mode)" />
+      <param name="profile" value="$(arg profile)" />
+      <param name="log_dir" value="$(arg log_dir)" />
+      <param name="can_dest_ip" value="$(arg can_dest_ip)" />
+      <param name="can_dest_port" value="$(arg can_dest_port)" />
+      <param name="can_self_port" value="$(arg can_self_port)" />
+      <remap from="/vehicle_pose" to="/ebs_test/vehicle_pose" />
+      <remap from="/cone_map" to="/ebs_test/cone_map" />
+      <remap from="/planned_path" to="/ebs_test/planned_path" />
+      <remap from="/planning/legacy_road_status" to="/ebs_test/road_status" />
+      <remap from="/control/legacy_status" to="/ebs_test/tracker_status" />
+      <remap from="/control/legacy_candidate_steering" to="/ebs_test/candidate_steering" />
+      <remap from="/localization/gps_status" to="/ebs_test/gps_status" />
+      <remap from="/localization/imu_status" to="/ebs_test/imu_status" />
+    </node>
+  </group>
+</launch>

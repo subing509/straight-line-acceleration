@@ -1,0 +1,11 @@
+<launch>
+  <!-- Whole real sensor/map/planner/tracker chain; original steering/stop only.
+       RES and drive permission are controlled independently by site personnel. -->
+  <arg name="log_dir" default="$(env HOME)/.ros/ebs_test_logs" />
+  <include file="$(find ebs_test)/launch/ebs_shadow.launch">
+    <arg name="enable_vehicle_output" value="true" />
+    <arg name="output_mode" value="original_protocol_test" />
+    <arg name="profile" value="baseline_shadow" />
+    <arg name="log_dir" value="$(arg log_dir)" />
+  </include>
+</launch>
